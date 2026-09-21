@@ -1,19 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dong2VS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dong2VS — Puzzle games for Android</title>
+<meta name="description" content="Dong2VS makes small, focused puzzle games for Android: Connect Lights, Chroma Clear and Firefly Trails.">
+<meta name="theme-color" content="#0a0f1f">
+<meta property="og:title" content="Dong2VS — Puzzle games for Android">
+<meta property="og:description" content="Small, focused puzzle games for Android.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff78c'/%3E%3Cstop offset='.55' stop-color='%2335eaff'/%3E%3Cstop offset='1' stop-color='%23ff71db'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%230a0f1f'/%3E%3C/svg%3E">
 <style>
-  body { font-family: system-ui, sans-serif; background: #12122a; color: #eee; display: flex;
-         align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-  a { color: #7dd3fc; }
+  :root {
+    --bg: #0a0f1f;
+    --bg-2: #101833;
+    --surface: rgba(255,255,255,.045);
+    --border: rgba(255,255,255,.09);
+    --text: #eaf1ff;
+    --muted: #9fb0d0;
+    --gold: #fff78c;
+    --cyan: #35eaff;
+    --pink: #ff71db;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(900px 520px at 12% -8%, rgba(53,234,255,.16), transparent 60%),
+      radial-gradient(760px 480px at 92% 6%, rgba(255,113,219,.13), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%) fixed;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  html[data-lang="vi"] [lang="en"], html[data-lang="en"] [lang="vi"] { display: none !important; }
+  a { color: var(--cyan); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 8px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 28px 0 8px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: -.01em; font-size: 1.15rem; text-decoration: none; color: var(--text); }
+  .mark { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--gold), var(--cyan) 55%, var(--pink)); display: grid; place-items: center; }
+  .mark i { width: 12px; height: 12px; border-radius: 50%; background: var(--bg); display: block; }
+  .lang { display: flex; gap: 6px; }
+  .lang button {
+    font: inherit; font-size: .82rem; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--border); padding: 6px 14px; border-radius: 999px; cursor: pointer;
+  }
+  .lang button:hover, .lang button[aria-pressed="true"] { color: var(--cyan); border-color: var(--cyan); }
+
+  .hero { padding: 64px 0 40px; max-width: 720px; }
+  .eyebrow { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); margin: 0 0 14px; }
+  h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); line-height: 1.08; letter-spacing: -.03em; margin: 0 0 18px; text-wrap: balance; }
+  h1 em { font-style: normal; background: linear-gradient(90deg, var(--gold), var(--cyan) 50%, var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { color: var(--muted); font-size: 1.08rem; margin: 0; max-width: 56ch; }
+
+  h2 { font-size: 1.05rem; letter-spacing: .02em; margin: 56px 0 18px; color: var(--muted); font-weight: 600; }
+  .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card {
+    --accent: var(--cyan);
+    position: relative; display: flex; flex-direction: column; gap: 14px;
+    padding: 22px; border-radius: 20px; background: var(--surface);
+    border: 1px solid var(--border); overflow: hidden; isolation: isolate;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: -40% -20% auto -20%; height: 70%; z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent);
+  }
+  .card .icon { width: 84px; height: 84px; border-radius: 20px; display: block; box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .card .body { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
+  .card h3 { margin: 0; font-size: 1.25rem; letter-spacing: -.01em; line-height: 1.25; }
+  .tag { font-size: .78rem; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .card p.desc { margin: 0; color: var(--muted); font-size: .97rem; flex: 1; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 4px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: .92rem;
+    padding: 10px 16px; border-radius: 12px; color: #06101f; background: var(--accent);
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.soon { background: transparent; color: var(--muted); border: 1px dashed var(--border); cursor: default; }
+  .link { font-size: .88rem; color: var(--muted); }
+  .link:hover { color: var(--text); }
+
+  .about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-top: 8px; }
+  .panel { padding: 24px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); }
+  .panel h3 { margin: 0 0 8px; font-size: 1.05rem; }
+  .panel p { margin: 0 0 10px; color: var(--muted); }
+  .panel p:last-child { margin-bottom: 0; }
+
+  footer { margin-top: 64px; padding: 28px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: .86rem; }
+  footer .row { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 10px; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 860px) {
+    .games { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; }
+    .hero { padding-top: 40px; }
+    .card { flex-direction: row; align-items: flex-start; gap: 16px; }
+    .card .icon { width: 68px; height: 68px; border-radius: 17px; flex: none; }
+  }
+  @media (max-width: 420px) {
+    .card { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<div>
-  <h1>Dong2VS</h1>
-  <p>Developer site — hosts <a href="/app-ads.txt">app-ads.txt</a> for apps published under this account.</p>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><span class="mark"><i></i></span>Dong2VS</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="btn-en" data-set="en">English</button>
+      <button type="button" id="btn-vi" data-set="vi">Tiếng Việt</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow"><span lang="en">Puzzle games for Android</span><span lang="vi">Game giải đố cho Android</span></p>
+      <h1>
+        <span lang="en">Small puzzles for <em>quiet moments</em>.</span>
+        <span lang="vi">Những màn giải đố nhỏ cho <em>lúc thư giãn</em>.</span>
+      </h1>
+      <p class="lead">
+        <span lang="en">I make focused, easy-to-pick-up puzzle games. Free to play, supported by ads, and built to be enjoyed a few minutes at a time.</span>
+        <span lang="vi">Mình làm các game giải đố gọn nhẹ, dễ chơi. Miễn phí, có quảng cáo, và được thiết kế để chơi vài phút mỗi lần.</span>
+      </p>
+    </section>
+
+    <h2 id="games"><span lang="en">My games</span><span lang="vi">Các game của mình</span></h2>
+    <section class="games" aria-labelledby="games">
+
+      <article class="card" style="--accent:#35eaff">
+        <img class="icon" src="assets/connect-lights.png" width="84" height="84" alt="Connect Lights icon">
+        <div class="body">
+          <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
+          <h3>Connect Lights: Wire Puzzle</h3>
+          <p class="desc">
+            <span lang="en">Drag wires between glowing bulbs and light every target in a relaxing logic puzzle. 800 levels, plus a Harmony mode that mixes every mechanic.</span>
+            <span lang="vi">Kéo dây nối các bóng đèn phát sáng và thắp sáng mọi mục tiêu trong một game logic thư giãn. 800 màn chơi, cùng chế độ Hòa sắc kết hợp mọi cơ chế.</span>
+          </p>
+          <div class="actions">
+            <a class="btn" href="https://play.google.com/store/apps/details?id=com.dong2vs.lightweave" rel="noopener">
+              <span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span>
+            </a>
+            <a class="link" href="connect-lights-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#a56bff">
+        <img class="icon" src="assets/chroma-clear.png" width="84" height="84" alt="Chroma Clear icon">
+        <div class="body">
+          <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
+          <h3>Chroma Clear: Color Puzzle</h3>
+          <p class="desc">
+            <span lang="en">Fill lines, match colors, trigger a Chroma Burst. A block puzzle with a twist.</span>
+            <span lang="vi">Lấp đầy hàng, ghép màu và kích hoạt Chroma Burst. Một game xếp khối với điểm khác biệt riêng.</span>
+          </p>
+          <div class="actions">
+            <a class="btn" href="https://play.google.com/store/apps/details?id=com.chromaclear.game" rel="noopener">
+              <span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span>
+            </a>
+            <a class="link" href="chroma-clear-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#4fe3c1">
+        <img class="icon" src="assets/firefly-trails.png" width="84" height="84" alt="Firefly Trails icon">
+        <div class="body">
+          <p class="tag"><span lang="en">Puzzle · Coming soon</span><span lang="vi">Giải đố · Sắp ra mắt</span></p>
+          <h3>Firefly Trails: Forest Puzzle</h3>
+          <p class="desc">
+            <span lang="en">Guide fireflies out of a moonlit forest across three modes: Forest Journey, Moonlight Rush and Lantern Parade.</span>
+            <span lang="vi">Dẫn những chú đom đóm thoát khỏi khu rừng dưới ánh trăng qua ba chế độ: Forest Journey, Moonlight Rush và Lantern Parade.</span>
+          </p>
+          <div class="actions">
+            <span class="btn soon"><span lang="en">Coming soon</span><span lang="vi">Sắp ra mắt</span></span>
+            <a class="link" href="firefly-trails-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <h2><span lang="en">About &amp; contact</span><span lang="vi">Giới thiệu &amp; liên hệ</span></h2>
+    <section class="about">
+      <div class="panel">
+        <h3><span lang="en">Independent, one game at a time</span><span lang="vi">Làm độc lập, từng game một</span></h3>
+        <p>
+          <span lang="en">Every game here is designed, built and updated by one developer. Feedback shapes what gets fixed and added next, so if something feels off or you have an idea, please tell me.</span>
+          <span lang="vi">Mỗi game ở đây do một người thiết kế, lập trình và cập nhật. Góp ý của bạn quyết định điều gì được sửa và thêm tiếp theo, nên nếu thấy chưa ổn hoặc có ý tưởng, cứ nhắn cho mình nhé.</span>
+        </p>
+      </div>
+      <div class="panel">
+        <h3><span lang="en">Get in touch</span><span lang="vi">Liên hệ</span></h3>
+        <p><a href="mailto:dragonsfunny85@gmail.com">dragonsfunny85@gmail.com</a></p>
+        <p>
+          <span lang="en">On Google Play the developer name is</span><span lang="vi">Trên Google Play, tên nhà phát triển là</span>
+          <a href="https://play.google.com/store/apps/developer?id=Dragons+Funny" rel="noopener">Dragons Funny</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="row">
+      <a href="connect-lights-privacy-policy/"><span lang="en">Connect Lights privacy</span><span lang="vi">Quyền riêng tư Connect Lights</span></a>
+      <a href="connect-lights-privacy-policy/delete-data.html"><span lang="en">Delete my data</span><span lang="vi">Yêu cầu xoá dữ liệu</span></a>
+      <a href="/app-ads.txt">app-ads.txt</a>
+    </div>
+    <div>© 2026 Dong2VS</div>
+  </footer>
 </div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('d2v-lang'); } catch (e) {}
+    var lang = saved || ((navigator.language || 'en').toLowerCase().indexOf('vi') === 0 ? 'vi' : 'en');
+    function set(l) {
+      root.setAttribute('data-lang', l);
+      root.setAttribute('lang', l);
+      document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
+      document.getElementById('btn-vi').setAttribute('aria-pressed', l === 'vi');
+      try { localStorage.setItem('d2v-lang', l); } catch (e) {}
+    }
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.addEventListener('click', function () { set(b.getAttribute('data-set')); });
+    });
+    set(lang);
+  })();
+</script>
 </body>
 </html>

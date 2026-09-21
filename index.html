@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dong2VS — Puzzle games for Android</title>
-<meta name="description" content="Dong2VS makes small, focused puzzle games for Android: Connect Lights, Chroma Clear and Firefly Trails.">
+<meta name="description" content="Dong2VS makes small, focused puzzle games for Android: Connect Lights, Chroma Clear, Oddly Pairs and Firefly Trails.">
 <meta name="theme-color" content="#0a0f1f">
 <meta property="og:title" content="Dong2VS — Puzzle games for Android">
 <meta property="og:description" content="Small, focused puzzle games for Android.">
@@ -58,22 +58,22 @@
   .lead { color: var(--muted); font-size: 1.08rem; margin: 0; max-width: 56ch; }
 
   h2 { font-size: 1.05rem; letter-spacing: .02em; margin: 56px 0 18px; color: var(--muted); font-weight: 600; }
-  .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .games { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .card {
     --accent: var(--cyan);
-    position: relative; display: flex; flex-direction: column; gap: 14px;
-    padding: 22px; border-radius: 20px; background: var(--surface);
-    border: 1px solid var(--border); overflow: hidden; isolation: isolate;
+    display: flex; flex-direction: column;
+    border-radius: 20px; background: var(--surface);
+    border: 1px solid var(--border); overflow: hidden;
+    transition: border-color .2s, transform .2s;
   }
-  .card::before {
-    content: ""; position: absolute; inset: -40% -20% auto -20%; height: 70%; z-index: -1;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent);
-  }
-  .card .icon { width: 84px; height: 84px; border-radius: 20px; display: block; box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 35%, transparent); }
-  .card .body { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
-  .card h3 { margin: 0; font-size: 1.25rem; letter-spacing: -.01em; line-height: 1.25; }
-  .tag { font-size: .78rem; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin: 0; font-weight: 600; }
-  .card p.desc { margin: 0; color: var(--muted); font-size: .97rem; flex: 1; }
+  .card:hover { border-color: color-mix(in srgb, var(--accent) 55%, transparent); transform: translateY(-2px); }
+  .card .feature { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 500; object-fit: cover; background: var(--bg-2); }
+  .card .meta { display: flex; gap: 16px; padding: 20px 22px 22px; flex: 1; }
+  .card .icon { width: 72px; height: 72px; border-radius: 18px; display: block; flex: none; box-shadow: 0 8px 26px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .card .body { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+  .card h3 { margin: 0; font-size: 1.2rem; letter-spacing: -.01em; line-height: 1.25; }
+  .tag { font-size: .76rem; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .card p.desc { margin: 0; color: var(--muted); font-size: .95rem; flex: 1; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 4px; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: .92rem;
@@ -99,13 +99,12 @@
     .games { grid-template-columns: 1fr; }
     .about { grid-template-columns: 1fr; }
     .hero { padding-top: 40px; }
-    .card { flex-direction: row; align-items: flex-start; gap: 16px; }
-    .card .icon { width: 68px; height: 68px; border-radius: 17px; flex: none; }
   }
   @media (max-width: 420px) {
-    .card { flex-direction: column; }
+    .card .meta { padding: 16px; gap: 12px; }
+    .card .icon { width: 56px; height: 56px; border-radius: 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .card { transition: none; } .card:hover { transform: none; } }
 </style>
 </head>
 <body>
@@ -135,57 +134,78 @@
     <section class="games" aria-labelledby="games">
 
       <article class="card" style="--accent:#35eaff">
-        <img class="icon" src="assets/connect-lights.png" width="84" height="84" alt="Connect Lights icon">
-        <div class="body">
-          <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
-          <h3>Connect Lights: Wire Puzzle</h3>
-          <p class="desc">
-            <span lang="en">Drag wires between glowing bulbs and light every target in a relaxing logic puzzle. 800 levels, plus a Harmony mode that mixes every mechanic.</span>
-            <span lang="vi">Kéo dây nối các bóng đèn phát sáng và thắp sáng mọi mục tiêu trong một game logic thư giãn. 800 màn chơi, cùng chế độ Hòa sắc kết hợp mọi cơ chế.</span>
-          </p>
-          <div class="actions">
-            <a class="btn" href="https://play.google.com/store/apps/details?id=com.dong2vs.lightweave" rel="noopener">
-              <span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span>
-            </a>
-            <a class="link" href="connect-lights-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+        <img class="feature" src="assets/feature-connect-lights.jpg" width="800" height="390" alt="" loading="lazy">
+        <div class="meta">
+          <img class="icon" src="assets/connect-lights.png" width="72" height="72" alt="Connect Lights icon">
+          <div class="body">
+            <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
+            <h3>Connect Lights: Wire Puzzle</h3>
+            <p class="desc">
+              <span lang="en">Drag wires between glowing bulbs and light every target in a relaxing logic puzzle. 800 levels, plus a Harmony mode that mixes every mechanic.</span>
+              <span lang="vi">Kéo dây nối các bóng đèn phát sáng và thắp sáng mọi mục tiêu trong một game logic thư giãn. 800 màn chơi, cùng chế độ Hòa sắc kết hợp mọi cơ chế.</span>
+            </p>
+            <div class="actions">
+              <a class="btn" href="https://play.google.com/store/apps/details?id=com.dong2vs.lightweave" rel="noopener"><span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span></a>
+              <a class="link" href="connect-lights-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+            </div>
           </div>
         </div>
       </article>
-
       <article class="card" style="--accent:#a56bff">
-        <img class="icon" src="assets/chroma-clear.png" width="84" height="84" alt="Chroma Clear icon">
-        <div class="body">
-          <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
-          <h3>Chroma Clear: Color Puzzle</h3>
-          <p class="desc">
-            <span lang="en">Fill lines, match colors, trigger a Chroma Burst. A block puzzle with a twist.</span>
-            <span lang="vi">Lấp đầy hàng, ghép màu và kích hoạt Chroma Burst. Một game xếp khối với điểm khác biệt riêng.</span>
-          </p>
-          <div class="actions">
-            <a class="btn" href="https://play.google.com/store/apps/details?id=com.chromaclear.game" rel="noopener">
-              <span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span>
-            </a>
-            <a class="link" href="chroma-clear-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+        <img class="feature" src="assets/feature-chroma-clear.jpg" width="800" height="390" alt="" loading="lazy">
+        <div class="meta">
+          <img class="icon" src="assets/chroma-clear.png" width="72" height="72" alt="Chroma Clear icon">
+          <div class="body">
+            <p class="tag"><span lang="en">Puzzle · Available now</span><span lang="vi">Giải đố · Đã ra mắt</span></p>
+            <h3>Chroma Clear: Color Puzzle</h3>
+            <p class="desc">
+              <span lang="en">Fill lines, match colors, trigger a Chroma Burst. A block puzzle with a twist.</span>
+              <span lang="vi">Lấp đầy hàng, ghép màu và kích hoạt Chroma Burst. Một game xếp khối với điểm khác biệt riêng.</span>
+            </p>
+            <div class="actions">
+              <a class="btn" href="https://play.google.com/store/apps/details?id=com.chromaclear.game" rel="noopener"><span lang="en">Get it on Google Play</span><span lang="vi">Tải trên Google Play</span></a>
+              <a class="link" href="chroma-clear-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+            </div>
           </div>
         </div>
       </article>
-
+      <article class="card" style="--accent:#ffb648">
+        <img class="feature" src="assets/feature-oddly-pairs.jpg" width="800" height="390" alt="" loading="lazy">
+        <div class="meta">
+          <img class="icon" src="assets/oddly-pairs.png" width="72" height="72" alt="Oddly Pairs icon">
+          <div class="body">
+            <p class="tag"><span lang="en">Puzzle · Coming soon</span><span lang="vi">Giải đố · Sắp ra mắt</span></p>
+            <h3>Oddly Pairs: Animal Match</h3>
+            <p class="desc">
+              <span lang="en">Match silly animal pairs, follow the glowing path and enjoy every reaction. 800 picnic levels, plus Chill and Silly Rush modes.</span>
+              <span lang="vi">Ghép các cặp thú ngố nghếch, nối theo đường phát sáng và xem từng phản ứng hài hước. 800 màn picnic, cùng chế độ Chill và Silly Rush.</span>
+            </p>
+            <div class="actions">
+              <span class="btn soon"><span lang="en">Coming soon</span><span lang="vi">Sắp ra mắt</span></span>
+              <a class="link" href="oddly-pairs-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+            </div>
+          </div>
+        </div>
+      </article>
       <article class="card" style="--accent:#4fe3c1">
-        <img class="icon" src="assets/firefly-trails.png" width="84" height="84" alt="Firefly Trails icon">
-        <div class="body">
-          <p class="tag"><span lang="en">Puzzle · Coming soon</span><span lang="vi">Giải đố · Sắp ra mắt</span></p>
-          <h3>Firefly Trails: Forest Puzzle</h3>
-          <p class="desc">
-            <span lang="en">Guide fireflies out of a moonlit forest across three modes: Forest Journey, Moonlight Rush and Lantern Parade.</span>
-            <span lang="vi">Dẫn những chú đom đóm thoát khỏi khu rừng dưới ánh trăng qua ba chế độ: Forest Journey, Moonlight Rush và Lantern Parade.</span>
-          </p>
-          <div class="actions">
-            <span class="btn soon"><span lang="en">Coming soon</span><span lang="vi">Sắp ra mắt</span></span>
-            <a class="link" href="firefly-trails-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+        <img class="feature" src="assets/feature-firefly-trails.jpg" width="800" height="390" alt="" loading="lazy">
+        <div class="meta">
+          <img class="icon" src="assets/firefly-trails.png" width="72" height="72" alt="Firefly Trails icon">
+          <div class="body">
+            <p class="tag"><span lang="en">Puzzle · Coming soon</span><span lang="vi">Giải đố · Sắp ra mắt</span></p>
+            <h3>Firefly Trails: Forest Puzzle</h3>
+            <p class="desc">
+              <span lang="en">Guide fireflies out of a moonlit forest across three modes: Forest Journey, Moonlight Rush and Lantern Parade.</span>
+              <span lang="vi">Dẫn những chú đom đóm thoát khỏi khu rừng dưới ánh trăng qua ba chế độ: Forest Journey, Moonlight Rush và Lantern Parade.</span>
+            </p>
+            <div class="actions">
+              <span class="btn soon"><span lang="en">Coming soon</span><span lang="vi">Sắp ra mắt</span></span>
+              <a class="link" href="firefly-trails-privacy-policy/"><span lang="en">Privacy</span><span lang="vi">Quyền riêng tư</span></a>
+            </div>
           </div>
         </div>
       </article>
-    </section>
+        </section>
 
     <h2><span lang="en">About &amp; contact</span><span lang="vi">Giới thiệu &amp; liên hệ</span></h2>
     <section class="about">
